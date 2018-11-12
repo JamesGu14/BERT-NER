@@ -24,27 +24,27 @@ flags = tf.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string(
-    "data_dir", None,
+    "data_dir", '/NERdata',
     "The input datadir.",
 )
 
 flags.DEFINE_string(
-    "bert_config_file", None,
+    "bert_config_file", '/checkpoint/bert_config.json',
     "The config json file corresponding to the pre-trained BERT model."
 )
 
 flags.DEFINE_string(
-    "task_name", None, "The name of the task to train."
+    "task_name", 'NER', "The name of the task to train."
 )
 
 flags.DEFINE_string(
-    "output_dir", None,
+    "output_dir", 'output/result_dir/',
     "The output directory where the model checkpoints will be written."
 )
 
 ## Other parameters
 flags.DEFINE_string(
-    "init_checkpoint", None,
+    "init_checkpoint", '/checkpoint/bert_model.ckpt',
     "Initial checkpoint (usually from a pre-trained BERT model)."
 )
 
@@ -59,7 +59,7 @@ flags.DEFINE_integer(
 )
 
 flags.DEFINE_bool(
-    "do_train", False,
+    "do_train", True,
     "Whether to run training."
 )
 flags.DEFINE_bool("use_tpu", False, "Whether to use TPU or GPU/CPU.")
@@ -85,7 +85,7 @@ flags.DEFINE_integer("save_checkpoints_steps", 1000,
 flags.DEFINE_integer("iterations_per_loop", 1000,
                      "How many steps to make in each estimator call.")
 
-flags.DEFINE_string("vocab_file", None,
+flags.DEFINE_string("vocab_file", '/checkpoint/vocab.txt',
                     "The vocabulary file that the BERT model was trained on.")
 tf.flags.DEFINE_string("master", None, "[Optional] TensorFlow master URL.")
 flags.DEFINE_integer(
@@ -488,7 +488,7 @@ def main(_):
         tf.logging.info("***** Running training *****")
         tf.logging.info("  Num examples = %d", len(train_examples))
         tf.logging.info("  Batch size = %d", FLAGS.train_batch_size)
-        tf.logging.info("  Num steps = %d", num_train_steps)
+        tf.logging.info("  Num steps  = %d", num_train_steps)
         train_input_fn = file_based_input_fn_builder(
             input_file=train_file,
             seq_length=FLAGS.max_seq_length,
@@ -523,11 +523,6 @@ def main(_):
 
 
 if __name__ == "__main__":
-    flags.mark_flag_as_required("data_dir")
-    flags.mark_flag_as_required("task_name")
-    flags.mark_flag_as_required("vocab_file")
-    flags.mark_flag_as_required("bert_config_file")
-    flags.mark_flag_as_required("output_dir")
     tf.app.run()
 
 
